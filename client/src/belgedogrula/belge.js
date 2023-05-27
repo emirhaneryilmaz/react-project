@@ -1,6 +1,8 @@
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import DropdownUser from '../afterLogin/dropdown'
+import { savePDF } from '@progress/kendo-react-pdf';
+
 
 export default function Belge() {
     const location = useLocation();
@@ -8,9 +10,21 @@ export default function Belge() {
     const neigh = location.state.neigh;
     const street = location.state.street;
 
-    const buttonHandler = () => {
-        console.log(city + " " + neigh + " " + street);
-    }
+    const buttonHandler = async () => {
+        const content = `${city} ${neigh} ${street}`;
+        const dataUri = await savePDF(
+          <div>
+            <h1>Belge İçeriği</h1>
+            <p>{content}</p>
+          </div>,
+          { paperSize: 'A4' }
+        );
+        const link = document.createElement('a');
+        link.href = dataUri;
+        link.download = 'belge.pdf';
+        link.click();
+      };
+
 
     return (
         <div>
