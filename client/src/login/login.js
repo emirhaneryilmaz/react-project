@@ -85,8 +85,18 @@ function Login() {
 
     const handleSubmit = event => {
         event.preventDefault();
-        if (userStatus === true) {
-            navigate('/home', {state:{id: anId, user: userStatus}});
+        try {
+            let tc = userData[0].tckimlikNo;
+            let name = userData[0].adSoyad;
+            if (tc == null || name == null ) {
+                throw new Error("Lütfen tüm bilgileri giriniz.");
+            }
+            if (userStatus === true) {
+                navigate('/home', {state:{id: anId, user: userStatus, name: name, tc: tc}});
+            }
+        } catch (error) {
+            alert("Lütfen tekrar deneyiniz!");
+            console.error(error.message);
         }
     };
 

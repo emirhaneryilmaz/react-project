@@ -3,13 +3,15 @@ import '../css/home.css';
 import DropdownUser from './dropdown';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { firestore } from "../firebase_setup/firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, loadBundle } from "firebase/firestore";
 
 export default function AfterLogin() {
     const location = useLocation()
     const navigate = useNavigate()
     const id1 = location.state.id;
     const user = location.state.user;
+    const tc = location.state.tc;
+    const name = location.state.name;
     const [userData, setUserData] = useState([]);
     let city = '';
     let neigh = '';
@@ -42,7 +44,7 @@ export default function AfterLogin() {
     const goTo = event => {
         event.preventDefault();
         setAdrs();
-        navigate('/belgeDogrulama', { state: { id: id1, user: user, city: city, neigh: neigh, street: street } });
+        navigate('/belgeDogrulama', { state: { id: id1, user: user, city: city, neigh: neigh, street: street, name: name, tc: tc } });
     }
 
     const go = event => {
