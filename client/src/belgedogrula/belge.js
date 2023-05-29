@@ -12,29 +12,29 @@ export default function Belge() {
     const city = location.state.city;
     const neigh = location.state.neigh;
     const street = location.state.street;
-    const tc = location.state.tc;
+    const tcKimlik = location.state.tc;
     const name = location.state.name;
 
     const buttonHandler = async () => {
-        console.log(tc + ' ' + name);
-        const content = `${city} ${neigh} ${street}`;
-        const dataUri = await savePDF(
-            <div>
-                <h1>Belge İçeriği</h1>
-                <p>{content}</p>
-            </div>,
-            { paperSize: 'A4' }
-        );
-        const link = document.createElement('a');
-        link.href = dataUri;
-        link.download = 'belge.pdf';
-        link.click();
+        console.log(tcKimlik + ' ' + name);
+        // const content = `${city} ${neigh} ${street}`;
+        // const dataUri = await savePDF(
+        //     <div>
+        //         <h1>Belge İçeriği</h1>
+        //         <p>{content}</p>
+        //     </div>,
+        //     { paperSize: 'A4' }
+        // );
+        // const link = document.createElement('a');
+        // link.href = dataUri;
+        // link.download = 'belge.pdf';
+        // link.click();
     };
 
     const goHome = event => {
         event.preventDefault();
         if (user) {
-            navigate('/home', { state: { id: id1, user: user, city: city, neigh: neigh, street: street, tc: tc, name: name } });
+            navigate('/home', { state: { id: id1, user: user, city: city, neigh: neigh, street: street, tc: tcKimlik, name: name } });
         } else {
             navigate('/', { state: { user: user } });
         }
@@ -77,7 +77,8 @@ export default function Belge() {
                                     </div>
                                     <input id="searchButton" type="submit" value="Ara" />
                                 </form>
-                            </li>  					<li id="l" className="login-area"><DropdownUser />
+                            </li>  					<li id="l" className="login-area">
+                                <DropdownUser />
                             </li>				</ul>
                     </nav>
                 </div>

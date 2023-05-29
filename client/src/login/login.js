@@ -22,6 +22,8 @@ function Login() {
     const navigate = useNavigate();
     const ref1 = useRef(null);
     const ref2 = useRef(null);
+    const [tck, setTcK] = useState('');
+    const [uname, setUname] = useState('');
 
     const set = () => {
         ref1.current.value = '';
@@ -43,19 +45,21 @@ function Login() {
     const getUserCheck = () => {
         setHover(colorNoHover);
         let hata = false;
-        for (let i=0; i<(userData.length); i++){
+        for (let i = 0; i < (userData.length); i++) {
             if (tcKimlik === userData[i].tckimlikNo && eSifre === userData[i].esifre) {
+                setTcK(userData[i].tckimlikNo);
+                setUname(userData[i].adSoyad);
                 setUser(userData[i].adSoyad);
                 let id = useridData[i].toString();
                 setAnId(id);
                 setUserStatus(true);
                 hata = false;
                 break;
-            } else if(tcKimlik != userData[i].tckimlikNo || eSifre != userData[i].esifre) {
+            } else if (tcKimlik != userData[i].tckimlikNo || eSifre != userData[i].esifre) {
                 hata = true;
             }
         }
-        if(hata){
+        if (hata) {
             let err = 'TC kimlik veya şifre hatalıdır.';
             set();
             alert(err);
@@ -85,18 +89,8 @@ function Login() {
 
     const handleSubmit = event => {
         event.preventDefault();
-        try {
-            let tc = userData[0].tckimlikNo;
-            let name = userData[0].adSoyad;
-            if (tc == null || name == null ) {
-                throw new Error("Lütfen tüm bilgileri giriniz.");
-            }
-            if (userStatus === true) {
-                navigate('/home', {state:{id: anId, user: userStatus, name: name, tc: tc}});
-            }
-        } catch (error) {
-            alert("Lütfen tekrar deneyiniz!");
-            console.error(error.message);
+        if (userStatus === true) {
+            navigate('/home', { state: { id: anId, user: userStatus, name: uname, tc: tck } });
         }
     };
 
