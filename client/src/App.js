@@ -21,6 +21,7 @@ import Ata from './kurumlar/ata/ata';
 import Avrupa from './kurumlar/avrupa/avrupa';
 import Ptt from './kurumlar/ptt/ptt';
 import Meb from './kurumlar/meb/meb';
+import Profile from './profile/profile';
 
 const App = () => {
   return (
@@ -42,6 +43,9 @@ const App = () => {
         <Route path='avrupa-birligi-baskanligi' element={<Avrupa />} />
         <Route path='PTT' element={<Ptt />} />
         <Route path='milli-egitim-bakanligi' element={<Meb />} />
+        <Route path='profile' element={<Profile />} />
+        
+
       </Routes>
     </Router>
   );
