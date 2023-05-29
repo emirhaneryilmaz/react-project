@@ -11,18 +11,20 @@ export default function Belge() {
     const street = location.state.street;
 
     const buttonHandler = async () => {
-        const content = `${city} ${neigh} ${street}`;
-        const dataUri = await savePDF(
-          <div>
-            <h1>Belge İçeriği</h1>
-            <p>{content}</p>
-          </div>,
-          { paperSize: 'A4' }
-        );
-        const link = document.createElement('a');
-        link.href = dataUri;
-        link.download = 'belge.pdf';
-        link.click();
+        // const content = `${city} ${neigh} ${street}`;
+        // const dataUri = await savePDF(
+        //   <div>
+        //     <h1>Belge İçeriği</h1>
+        //     <p>{content}</p>
+        //   </div>,
+        //   { paperSize: 'A4' }
+        // );
+        // const link = document.createElement('a');
+        // link.href = dataUri;
+        // link.download = 'belge.pdf';
+        // link.click();
+
+        console.log(city +" ," + neigh+" ," + street);
       };
 
 
