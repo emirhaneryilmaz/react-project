@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './styles.login.css';
 import '../App.css';
@@ -20,6 +20,13 @@ function Login() {
     const [userData, setUserData] = useState([]);
     const [useridData, setUseridData] = useState([]);
     const navigate = useNavigate();
+    const ref1 = useRef(null);
+    const ref2 = useRef(null);
+
+    const set = () => {
+        ref1.current.value = '';
+        ref2.current.value = '';
+    }
 
     const getUserData = async () => {
         const docSnap = await getDocs(collection(firestore, "user-data"));
@@ -35,13 +42,23 @@ function Login() {
 
     const getUserCheck = () => {
         setHover(colorNoHover);
+        let hata = false;
         for (let i=0; i<(userData.length); i++){
             if (tcKimlik === userData[i].tckimlikNo && eSifre === userData[i].esifre) {
                 setUser(userData[i].adSoyad);
                 let id = useridData[i].toString();
                 setAnId(id);
                 setUserStatus(true);
+                hata = false;
+                break;
+            } else if(tcKimlik != userData[i].tckimlikNo || eSifre != userData[i].esifre) {
+                hata = true;
             }
+        }
+        if(hata){
+            let err = 'TC kimlik veya şifre hatalıdır.';
+            set();
+            alert(err);
         }
     }
 
@@ -69,7 +86,7 @@ function Login() {
     const handleSubmit = event => {
         event.preventDefault();
         if (userStatus === true) {
-            navigate('/home', {state:{id: anId}});
+            navigate('/home', {state:{id: anId, user: userStatus}});
         }
     };
 
@@ -98,10 +115,10 @@ function Login() {
                         <dl>
                             <dt>Giriş Yapılacak Adres
                             </dt>
-                            <dd><span title="www.turkiye.gov.tr">www.turkiye.gov.tr</span></dd>
+                            <dd><a href='/'><span title="www.turkiye.gov.tr">www.turkiye.gov.tr</span></a></dd>
                             <dt>Giriş Yapılacak Uygulama
                             </dt>
-                            <dd><span title="e-Devlet Kapısı">e-Devlet Kapısı</span></dd>
+                            <dd><a href='/'><span title="e-Devlet Kapısı">e-Devlet Kapısı</span></a></dd>
                         </dl>
                     </section>
 
@@ -166,7 +183,7 @@ function Login() {
                                     <input type="hidden" name="encTridField" id="encTridField" value="" />
                                     <div className="fieldGroup">
                                         <input name="tridField" type={type ? "text" : "password"} className="text" id="tridField"
-                                            onChange={tcChange}
+                                            onChange={tcChange} ref={ref1}
                                             value={tcKimlik} tabIndex="1"
                                             autoComplete="off" maxLength="11" pattern="[0-9]{11}"
                                             title="Kimlik numaranız 11 adet rakamdan oluşmalıdır"
@@ -186,7 +203,7 @@ function Login() {
                                     </label>
                                     <div className="fieldGroup">
                                         <input name="egpField" id="egpField" type="password" className="text" onChange={sifreChange} value={eSifre}
-                                            tabIndex="2" autoComplete="off"
+                                            tabIndex="2" autoComplete="off" ref={ref2}
                                             aria-required="true" required />
 
                                         <span className="virtual-key-wrapper">

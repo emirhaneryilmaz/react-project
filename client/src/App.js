@@ -14,6 +14,13 @@ import Address from './address/address';
 import Adrsque from './address/adrsQue';
 import AdrsUpdate from './address/adrsUpdate';
 import Belge from './belgedogrula/belge';
+import Kurumlar from './kurumlar/kurumlar';
+import Emniyet from './kurumlar/emniyet.js/emniyet';
+import Adalet from './kurumlar/adalet/adalet';
+import Ata from './kurumlar/ata/ata';
+import Avrupa from './kurumlar/avrupa/avrupa';
+import Ptt from './kurumlar/ptt/ptt';
+import Meb from './kurumlar/meb/meb';
 
 const App = () => {
   return (
@@ -28,6 +35,13 @@ const App = () => {
         <Route path='addressQuestion' element={<Adrsque />} />
         <Route path='addressUpdate' element={<AdrsUpdate />} />
         <Route path='belgeDogrulama' element={<Belge />} />
+        <Route path='kurumlar' element={<Kurumlar />} />
+        <Route path='emniyet-genel-mudurlugu' element={<Emniyet />} />
+        <Route path='adalet-bakanligi' element={<Adalet />} />
+        <Route path='Ataturk-kultur' element={<Ata />} />
+        <Route path='avrupa-birligi-baskanligi' element={<Avrupa />} />
+        <Route path='PTT' element={<Ptt />} />
+        <Route path='milli-egitim-bakanligi' element={<Meb />} />
       </Routes>
     </Router>
   );

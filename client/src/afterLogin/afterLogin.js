@@ -1,48 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/home.css';
 import DropdownUser from './dropdown';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { firestore } from '../firebase_setup/firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import { firestore } from "../firebase_setup/firebase";
+import { collection, getDocs } from "firebase/firestore";
 
 export default function AfterLogin() {
     const location = useLocation()
     const navigate = useNavigate()
     const id1 = location.state.id;
+    const user = location.state.user;
     const [userData, setUserData] = useState([]);
+    let city = '';
+    let neigh = '';
+    let street = '';
 
-    const getUserData = async () => {
+    const getUserAdrsData = async () => {
         const docSnap = await getDocs(collection(firestore, "user-data", id1, "address"));
         docSnap.forEach((doc) => {
             setUserData(current => [...current, doc.data()]);
         });
     }
 
-    React.useEffect(() => {
-        getUserData();
+    useEffect(() => {
+        getUserAdrsData();
     }, []);
 
-    const goTo = event => {
-        event.preventDefault();
+    const setAdrs = () => {
         try {
-            let city = userData[0].sehir;
-            let neigh = userData[0].mahalle;
-            let street = userData[0].sokak;
+            city = userData[0].sehir;
+            neigh = userData[0].mahalle;
+            street = userData[0].sokak;
             if (city == null || neigh == null || street == null) {
                 throw new Error("Lütfen tüm bilgileri giriniz.");
             }
-            navigate('/belgeDogrulama', { state: { id: id1, city: city, neigh: neigh, street: street } });
-            console.log(city);
-
         } catch (error) {
-            alert("Lütfen önce adres bilgisi ekleyiniz!");
             console.error(error.message);
         }
     }
 
+    const goTo = event => {
+        event.preventDefault();
+        setAdrs();
+        navigate('/belgeDogrulama', { state: { id: id1, user: user, city: city, neigh: neigh, street: street } });
+    }
+
     const go = event => {
         event.preventDefault();
-        navigate('/services', { state: {id: id1} })
+        navigate('/services', { state: { id: id1, user: user} })
+    }
+
+    const goKurumlar = event => {
+        event.preventDefault();
+        setAdrs();
+        navigate('/kurumlar', { state: { id: id1, user: user, city: city, neigh: neigh, street: street} })
     }
 
     return (
@@ -50,13 +61,14 @@ export default function AfterLogin() {
             <header id="top">
                 <div className="headerGroup">
                     <h1 id="brandingBlock">
-                        <a id="homeLink" href="/" title="Ana Sayfa'ya Dönüş">e-Devlet Kapısı</a>
+                        <a id="homeLink" href="/home" title="Ana Sayfa'ya Dönüş">e-Devlet Kapısı</a>
                     </h1>
                     <nav id="mainActionsBlock" aria-labelledby="mainActionsBlockTitle">
                         <h2 className="sectionTitle" id="mainActionsBlockTitle">Ana Bölümler</h2>
                         <ul className="mainActionsList">
-                            <li><span className="fast-shortcuts"> <a href="/iletisim?hizli=CozumMerkeziV2"><i className="edk-fonticon-fastresponse"></i><span> Hızlı Çözüm</span></a></span></li>
-                            <li className="inner-wrapper">					</li>  					<li id="l" className="login-area">{DropdownUser()}
+                            <li><span className="fast-shortcuts"> <a><i className="edk-fonticon-fastresponse"></i><span> Hızlı Çözüm</span></a></span></li>
+                            <li className="inner-wrapper">					</li>  					<li id="l" className="login-area">
+                                <DropdownUser />
                             </li> 				</ul>
                     </nav>
                 </div>
@@ -75,20 +87,20 @@ export default function AfterLogin() {
             <nav id="homepageActionsBlock" className="active" aria-labelledby="homepageActionsBlockTitle">
                 <h2 id="homepageActionsBlockTitle">Temel İşlevler</h2>
                 <ul id="homepageActionsList">
-                    <li><a href='#' onClick={go}><span className="menu-icon"><i className="edk-fonticon-eservice"></i></span><em>e-Hizmetler</em>
+                    <li><a href='/services' onClick={go}><span className="menu-icon"><i className="edk-fonticon-eservice"></i></span><em>e-Hizmetler</em>
                         <span>Sorgulama, Başvuru ve Ödeme hizmetleri.</span></a>
                     </li>
-                    <li><a href="#"><span className="menu-icon"><i className="edk-fonticon-agency"></i></span><em>Kurumlar</em>
+                    <li><a href="/kurumlar" onClick={goKurumlar}><span className="menu-icon"><i className="edk-fonticon-agency"></i></span><em>Kurumlar</em>
                         <span>Resmi kurumların hizmetleri ve iletişim bilgileri.</span></a>
                     </li>
-                    <li><a href="#"><span className="menu-icon"><i className="edk-fonticon-municipality"></i></span><em>Belediyeler</em>
+                    <li><a><span className="menu-icon"><i className="edk-fonticon-municipality"></i></span><em>Belediyeler</em>
                         <span>Belediyelerin iletişim bilgileri ve sundukları hizmetler.</span></a>
                     </li>
-                    <li><a href="#"><span className="menu-icon"><i className="edk-fonticon-private"></i></span><em>Firmalar</em>
+                    <li><a><span className="menu-icon"><i className="edk-fonticon-private"></i></span><em>Firmalar</em>
                         <span>Şirketlerdeki fatura ve abonelik bilgilerinize erişin.</span></a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a>
                             <span className="menu-icon"><i className="ico-graduation-cap-1"></i></span>
                             <em>Üniversiteler</em>
                             <span>Üniversitelerin sundukları hizmetler.</span>
@@ -116,7 +128,7 @@ export default function AfterLogin() {
                                 <div className="homePageBannerContent">
                                     <h3>Yurt İçi Seçmen Kaydı Sorgulama</h3>
                                     <span>Yurt içi seçmen kütüğü bilgilerinizi ve oy kullanacağınız yer bilgisini görüntüleyebilirsiniz.</span>
-                                    <a href="/home" className="agencyServiceLink">Yurt İçi Seçmen Kaydı Sorgulama</a>
+                                    <a className="agencyServiceLink">Yurt İçi Seçmen Kaydı Sorgulama</a>
                                 </div>
                             </li>
                         </ul>
@@ -127,7 +139,7 @@ export default function AfterLogin() {
                 <div className="homepageconceptList">
                     <div className="edk-row card-block">
                         <div className="colc3">
-                            <a href="/calisma-hayatim"> <span className="card-block-icon"> <img className="webp" alt="" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64webp/konsept003.1.8.0.webp"></img>
+                            <a> <span className="card-block-icon"> <img className="webp" alt="" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64webp/konsept003.1.8.0.webp"></img>
                             </span>
                                 <div className="card-content">
                                     <h3>Çalışma Hayatım</h3>
@@ -135,7 +147,7 @@ export default function AfterLogin() {
                             </a>
                         </div>
                         <div className="colc3">
-                            <a href="/araclarim"> <span className="card-block-icon"> <img className="webp" alt="" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64webp/konsept001.1.8.0.webp"></img>
+                            <a> <span className="card-block-icon"> <img className="webp" alt="" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64webp/konsept001.1.8.0.webp"></img>
                             </span>
                                 <div className="card-content">
                                     <h3>Araçlarım (Gerçek Kişi)</h3>
@@ -143,7 +155,7 @@ export default function AfterLogin() {
                             </a>
                         </div>
                         <div className="colc3">
-                            <a href="/araclarim-tuzel"> <span className="card-block-icon"> <img className="webp" alt="" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64webp/konsept004.1.8.0.webp"></img>
+                            <a> <span className="card-block-icon"> <img className="webp" alt="" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64webp/konsept004.1.8.0.webp"></img>
                             </span>
                                 <div className="card-content">
                                     <h3>Araçlarım (Tüzel Kişi)</h3>
@@ -152,7 +164,7 @@ export default function AfterLogin() {
                         </div>
 
                         <div className="colc3">
-                            <a href="/adrese-teslim-sifre-basvurusu"> <span className="card-block-icon"> <img className="webp" alt="" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64webp/hizmetikon001.1.8.0.webp"></img>
+                            <a> <span className="card-block-icon"> <img className="webp" alt="" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64webp/hizmetikon001.1.8.0.webp"></img>
                             </span>
                                 <div className="card-content">
                                     <h3>Adrese Teslim Şifre Başvurusu</h3>
@@ -160,7 +172,7 @@ export default function AfterLogin() {
                             </a>
                         </div>
                         <div className="colc3">
-                            <a href="/ikametgahim-adrese-bagli-hizmetler"> <span className="card-block-icon"> <img className="webp" alt="" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64webp/konsept002.1.8.0.webp"></img>
+                            <a> <span className="card-block-icon"> <img className="webp" alt="" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64webp/konsept002.1.8.0.webp"></img>
                             </span>
                                 <div className="card-content">
                                     <h3>İkametgahım (Adrese Bağlı Hizmetler)</h3>
@@ -175,7 +187,7 @@ export default function AfterLogin() {
                 <div className="homepageCardblockList">
                     <div className="edk-row ">
                         <div className="colc3 card-item">
-                            <a href="/sirketler-icin-hizmet-listesi"> <span className="card-icon"> <i className="ico-briefcase" ></i>
+                            <a> <span className="card-icon"> <i className="ico-briefcase" ></i>
                             </span>
                                 <div className="card-content">
                                     <h3>Şirket Hizmetleri</h3>
@@ -184,7 +196,7 @@ export default function AfterLogin() {
                             </a>
                         </div>
                         <div className="colc3 card-item">
-                            <a href="/yeni-eklenen-hizmetler"> <span className="card-icon"> <i className="ico-megaphone" ></i></span>
+                            <a> <span className="card-icon"> <i className="ico-megaphone" ></i></span>
                                 <div className="card-content">
                                     <h3>Yeni Hizmetler</h3>
                                     <p>e-Devlet Kapısı'na en son eklenen Hizmetler</p>
@@ -195,7 +207,7 @@ export default function AfterLogin() {
                             <a href="/belgeDogrulama" onClick={goTo}> <span className="card-icon"> <i className="ico-doc-text-inv" ></i>
                             </span>
                                 <div className="card-content">
-                                    <h3>Evrak Doğrulama Hizmetleri</h3>
+                                    <h3>Belge Doğrulama Hizmetleri</h3>
                                     <p>e-Devlet Kapısı'ndan alınmış</p>
                                 </div> <span className="read-more">Tümü <i className="ico-right-open-big"></i></span>
                             </a>
@@ -206,63 +218,63 @@ export default function AfterLogin() {
                 <h2>En Çok Kullanılan Hizmetler</h2>
                 <ol start="1" id="homepageTopServicesList">
                     <li>
-                        <a href="/sgk-tescil-ve-hizmet-dokumu" className="integratedService">
+                        <a className="integratedService">
                             <img className="lazy" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64px/254.1.8.0.png" alt="Sosyal Güvenlik Kurumu" role="presentation" data-has-webp></img>
                             <em>Sosyal Güvenlik Kurumu</em>
                             <span>SGK Tescil ve Hizmet Dökümü / İşyeri Unvan Listesi</span>
                         </a>
                     </li>
                     <li>
-                        <a href="/sgk-ne-zaman-emekli-olabilirim" className="integratedService">
+                        <a className="integratedService">
                             <img className="lazy" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64px/254.1.8.0.png" alt="Sosyal Güvenlik Kurumu" role="presentation" data-has-webp></img>
                             <em>Sosyal Güvenlik Kurumu</em>
                             <span>Normal Şartlarda Ne Zaman Emekli Olabilirim?</span>
                         </a>
                     </li>
                     <li>
-                        <a href="/ashb-sosyal-yardim-bilgileri-sorgulama" className="integratedService">
+                        <a className="integratedService">
                             <img className="lazy" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64px/1378.1.8.0.png" alt="Aile ve Sosyal Hizmetler Bakanlığı" role="presentation" data-has-webp></img>
                             <em>Aile ve Sosyal Hizmetler Bakanlığı</em>
                             <span>Sosyal Yardım Bilgileri Sorgulama</span>
                         </a>
                     </li>
                     <li>
-                        <a href="/4a-emekli-aylik-bilgisi" className="integratedService">
+                        <a className="integratedService">
                             <img className="lazy" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64px/254.1.8.0.png" alt="Sosyal Güvenlik Kurumu" role="presentation" data-has-webp></img>
                             <em>Sosyal Güvenlik Kurumu</em>
                             <span>4A Emekli Aylık Bilgisi</span>
                         </a>
                     </li>
                     <li>
-                        <a href="/ptt-ptt-uzerinden-yapilan-kurum-odemeleri-sorgulama" className="integratedService">
+                        <a className="integratedService">
                             <img className="lazy" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64px/28.1.8.0.png" alt="PTT" role="presentation" data-has-webp></img>
                             <em>PTT</em>
                             <span>PTT Üzerinden Yapılan Kurum Ödemeleri Sorgulama ve Hesaba Aktarma</span>
                         </a>
                     </li>
                     <li>
-                        <a href="/gtb-mersis-sahibi-ortagi-yetkilisi-oldugum-ticari-isletme-veya-sirketler" className="integratedService">
+                        <a className="integratedService">
                             <img className="lazy" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64px/15.1.8.0.png" alt="Ticaret Bakanlığı" role="presentation" data-has-webp></img>
                             <em>Ticaret Bakanlığı</em>
                             <span>Sahibi / Ortağı / Yetkilisi Olduğum Ticari İşletme veya Şirketler</span>
                         </a>
                     </li>
                     <li>
-                        <a href="/sosyal-guvenlik-emekli-gunluk-odeme-sorgulama" className="integratedService">
+                        <a className="integratedService">
                             <img className="lazy" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64px/254.1.8.0.png" alt="Sosyal Güvenlik Kurumu" role="presentation" data-has-webp></img>
                             <em>Sosyal Güvenlik Kurumu</em>
                             <span>Emekli Günlük Ödeme Sorgulama</span>
                         </a>
                     </li>
                     <li>
-                        <a href="/aile-ve-sosyal-hizmetler-sosyal-yardim-basvuru-hizmeti" className="integratedService">
+                        <a className="integratedService">
                             <img className="lazy" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64px/1378.1.8.0.png" alt="Aile ve Sosyal Hizmetler Bakanlığı" role="presentation" data-has-webp></img>
                             <em>Aile ve Sosyal Hizmetler Bakanlığı</em>
                             <span>Sosyal Yardım Başvuru Hizmeti</span>
                         </a>
                     </li>
                     <li>
-                        <a href="/yuksek-secim-kurulu-yurt-ici-secmen-kaydi-sorgulama" className="integratedService">
+                        <a className="integratedService">
                             <img className="lazy" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64px/46.1.8.0.png" alt="Yüksek Seçim Kurulu Başkanlığı" role="presentation" data-has-webp></img>
                             <em>Yüksek Seçim Kurulu Başkanlığı</em>
                             <span>Yurt İçi Seçmen Kaydı Sorgulama</span>
@@ -273,7 +285,7 @@ export default function AfterLogin() {
                 <h2 className="sectionTitle">Gündemdeki Kısayollar</h2>
                 <ul>
                     <li>
-                        <a href="/belge-dogrulama" data-mh="homepage-shortcut">
+                        <a href="/belgeDogrulama" onClick={goTo} data-mh="homepage-shortcut">
                             <figure className="card">
                                 <img className="lazy" src="https://cdn.e-devlet.gov.tr/themes/izmir/images/banners/b0001.jpg" alt="" role="presentation" width="400" height="200" data-has-webp />
                             </figure>
@@ -282,7 +294,7 @@ export default function AfterLogin() {
                         </a>
                     </li>
                     <li>
-                        <a href="/e-devlette-engel-yok" data-mh="homepage-shortcut">
+                        <a data-mh="homepage-shortcut">
                             <figure className="card">
                                 <img className="lazy" src="https://cdn.e-devlet.gov.tr/themes/izmir/images/banners/b0003.jpg" alt="" role="presentation" width="400" height="200" data-has-webp />
                             </figure>
@@ -361,7 +373,7 @@ export default function AfterLogin() {
                         <a href="https://www.facebook.com/edevletkapi" rel="external" className="socialMediaLink facebook"><em>Facebook</em> <span>/edevletkapi</span></a>
                         <a href="https://www.youtube.com/channel/UChX28IHPQ2jyaBatdfRqGSQ" rel="external" className="socialMediaLink youtube"><em>YouTube</em> <span>e-Devlet Kapısı</span></a>
                         <a href="https://www.instagram.com/edevletkapisi" rel="external" className="socialMediaLink instagram"><em>Instagram</em> <span>/edevletkapisi</span></a>
-                        <em className="hashtag">#edevlet <a href="/iletisim?sosyal=Medya">Sosyal Medya Kullanım Kılavuzu</a></em>
+                        <em className="hashtag">#edevlet <a >Sosyal Medya Kullanım Kılavuzu</a></em>
                     </div>
                 </div>
             </section>

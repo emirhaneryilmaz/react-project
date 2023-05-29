@@ -4,11 +4,22 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
   const navigate = useNavigate();
+  const user = false;
 
   const enter = event => {
     event.preventDefault();
     navigate('/login');
-};
+  };
+
+  const goKurumlar = event => {
+    event.preventDefault();
+    navigate('/kurumlar', { state: { user: user } });
+  };
+
+  const goTo = event => {
+    event.preventDefault();
+    navigate('/belgeDogrulama', { state: { user: user } });
+}
 
   return (
     <div id="homePage">
@@ -20,9 +31,9 @@ export default function Home() {
           <nav id="mainActionsBlock" aria-labelledby="mainActionsBlockTitle">
             <h2 className="sectionTitle" id="mainActionsBlockTitle">Ana Bölümler</h2>
             <ul className="mainActionsList">
-              <li><span className="fast-shortcuts"> <a href="/iletisim?hizli=CozumMerkeziV2"><i className="edk-fonticon-fastresponse"></i><span> Hızlı Çözüm</span></a></span></li>
-              <li className="inner-wrapper">					</li>  					<li id="l" className="login-area"><button onClick={enter}> Giriş Yap <span className="ico-login"></span></button> 
-                </li> 				</ul>
+              <li><span className="fast-shortcuts"> <a><i className="edk-fonticon-fastresponse"></i><span> Hızlı Çözüm</span></a></span></li>
+              <li className="inner-wrapper">					</li>  					<li id="l" className="login-area"><button onClick={enter}> Giriş Yap <span className="ico-login"></span></button>
+              </li> 				</ul>
           </nav>
         </div>
       </header><div id="homepageHeroBlock" data-image="https://cdn.e-devlet.gov.tr/themes/izmir/images/banners/m00019.jpg">
@@ -40,20 +51,20 @@ export default function Home() {
       <nav id="homepageActionsBlock" className="active" aria-labelledby="homepageActionsBlockTitle">
         <h2 id="homepageActionsBlockTitle">Temel İşlevler</h2>
         <ul id="homepageActionsList">
-          <li><a href="#"><span className="menu-icon"><i className="edk-fonticon-eservice"></i></span><em>e-Hizmetler</em>
+          <li><a ><span className="menu-icon"><i className="edk-fonticon-eservice"></i></span><em>e-Hizmetler</em>
             <span>Sorgulama, Başvuru ve Ödeme hizmetleri.</span></a>
           </li>
-          <li><a href="#"><span className="menu-icon"><i className="edk-fonticon-agency"></i></span><em>Kurumlar</em>
+          <li><a href="/kurumlar" onClick={goKurumlar}><span className="menu-icon"><i className="edk-fonticon-agency"></i></span><em>Kurumlar</em>
             <span>Resmi kurumların hizmetleri ve iletişim bilgileri.</span></a>
           </li>
-          <li><a href="#"><span className="menu-icon"><i className="edk-fonticon-municipality"></i></span><em>Belediyeler</em>
+          <li><a ><span className="menu-icon"><i className="edk-fonticon-municipality"></i></span><em>Belediyeler</em>
             <span>Belediyelerin iletişim bilgileri ve sundukları hizmetler.</span></a>
           </li>
-          <li><a href="#"><span className="menu-icon"><i className="edk-fonticon-private"></i></span><em>Firmalar</em>
+          <li><a ><span className="menu-icon"><i className="edk-fonticon-private"></i></span><em>Firmalar</em>
             <span>Şirketlerdeki fatura ve abonelik bilgilerinize erişin.</span></a>
           </li>
           <li>
-            <a href="#">
+            <a>
               <span className="menu-icon"><i className="ico-graduation-cap-1"></i></span>
               <em>Üniversiteler</em>
               <span>Üniversitelerin sundukları hizmetler.</span>
@@ -65,7 +76,7 @@ export default function Home() {
       <section id="homepageBannersBlock">
         <div className="homepageTopBanners">
           <div className="precious-card">
-            <a rel="noopener noreferrer" href="http://www.atam.gov.tr/" target="_blank" data-mh="homepage-top"
+            <a rel="noopener noreferrer" href="http://www.atam.gov.tr/" data-mh="homepage-top"
               className="innerbox"> <span className="card-img"> <img className="webp" src="https://cdn.e-devlet.gov.tr/themes/izmir/images/banners/b0002.jpg" alt="ATAM"
                 width="400" height="200"></img></span>
               <h3>ATAM</h3>
@@ -78,11 +89,11 @@ export default function Home() {
                 <img src="https://cdn.e-devlet.gov.tr/themes/ankara/images/banners/f179.1.8.0.png"
                   className="lazy homePageBannerImage" width="725" height="315"
                   alt="Yurt İçi Seçmen Kaydı Sorgulama"></img>
-                  <div className="homePageBannerContent">
-                    <h3>Yurt İçi Seçmen Kaydı Sorgulama</h3>
-                    <span>Yurt içi seçmen kütüğü bilgilerinizi ve oy kullanacağınız yer bilgisini görüntüleyebilirsiniz.</span>
-                    <a href="/home" className="agencyServiceLink">Yurt İçi Seçmen Kaydı Sorgulama</a>
-                  </div>
+                <div className="homePageBannerContent">
+                  <h3>Yurt İçi Seçmen Kaydı Sorgulama</h3>
+                  <span>Yurt içi seçmen kütüğü bilgilerinizi ve oy kullanacağınız yer bilgisini görüntüleyebilirsiniz.</span>
+                  <a className="agencyServiceLink">Yurt İçi Seçmen Kaydı Sorgulama</a>
+                </div>
               </li>
             </ul>
           </div>
@@ -92,7 +103,7 @@ export default function Home() {
         <div className="homepageconceptList">
           <div className="edk-row card-block">
             <div className="colc3">
-              <a href="/calisma-hayatim"> <span className="card-block-icon"> <img className="webp" alt="" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64webp/konsept003.1.8.0.webp"></img>
+              <a > <span className="card-block-icon"> <img className="webp" alt="" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64webp/konsept003.1.8.0.webp"></img>
               </span>
                 <div className="card-content">
                   <h3>Çalışma Hayatım</h3>
@@ -100,7 +111,7 @@ export default function Home() {
               </a>
             </div>
             <div className="colc3">
-              <a href="/araclarim"> <span className="card-block-icon"> <img className="webp" alt="" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64webp/konsept001.1.8.0.webp"></img>
+              <a > <span className="card-block-icon"> <img className="webp" alt="" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64webp/konsept001.1.8.0.webp"></img>
               </span>
                 <div className="card-content">
                   <h3>Araçlarım (Gerçek Kişi)</h3>
@@ -108,7 +119,7 @@ export default function Home() {
               </a>
             </div>
             <div className="colc3">
-              <a href="/araclarim-tuzel"> <span className="card-block-icon"> <img className="webp" alt="" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64webp/konsept004.1.8.0.webp"></img>
+              <a > <span className="card-block-icon"> <img className="webp" alt="" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64webp/konsept004.1.8.0.webp"></img>
               </span>
                 <div className="card-content">
                   <h3>Araçlarım (Tüzel Kişi)</h3>
@@ -117,7 +128,7 @@ export default function Home() {
             </div>
 
             <div className="colc3">
-              <a href="/adrese-teslim-sifre-basvurusu"> <span className="card-block-icon"> <img className="webp" alt="" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64webp/hizmetikon001.1.8.0.webp"></img>
+              <a> <span className="card-block-icon"> <img className="webp" alt="" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64webp/hizmetikon001.1.8.0.webp"></img>
               </span>
                 <div className="card-content">
                   <h3>Adrese Teslim Şifre Başvurusu</h3>
@@ -125,7 +136,7 @@ export default function Home() {
               </a>
             </div>
             <div className="colc3">
-              <a href="/ikametgahim-adrese-bagli-hizmetler"> <span className="card-block-icon"> <img className="webp" alt=""  src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64webp/konsept002.1.8.0.webp"></img>
+              <a > <span className="card-block-icon"> <img className="webp" alt="" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64webp/konsept002.1.8.0.webp"></img>
               </span>
                 <div className="card-content">
                   <h3>İkametgahım (Adrese Bağlı Hizmetler)</h3>
@@ -140,7 +151,7 @@ export default function Home() {
         <div className="homepageCardblockList">
           <div className="edk-row ">
             <div className="colc3 card-item">
-              <a href="/sirketler-icin-hizmet-listesi"> <span className="card-icon"> <i className="ico-briefcase" ></i>
+              <a > <span className="card-icon"> <i className="ico-briefcase" ></i>
               </span>
                 <div className="card-content">
                   <h3>Şirket Hizmetleri</h3>
@@ -149,7 +160,7 @@ export default function Home() {
               </a>
             </div>
             <div className="colc3 card-item">
-              <a href="/yeni-eklenen-hizmetler"> <span className="card-icon"> <i className="ico-megaphone" ></i></span>
+              <a > <span className="card-icon"> <i className="ico-megaphone" ></i></span>
                 <div className="card-content">
                   <h3>Yeni Hizmetler</h3>
                   <p>e-Devlet Kapısı'na en son eklenen Hizmetler</p>
@@ -157,10 +168,10 @@ export default function Home() {
               </a>
             </div>
             <div className="colc3 card-item">
-              <a href="/belge-dogrulama"> <span className="card-icon"> <i className="ico-doc-text-inv" ></i>
+              <a href="/belgeDogrulama" onClick={goTo}> <span className="card-icon"> <i className="ico-doc-text-inv" ></i>
               </span>
                 <div className="card-content">
-                  <h3>Evrak Doğrulama Hizmetleri</h3>
+                  <h3>Belge Doğrulama Hizmetleri</h3>
                   <p>e-Devlet Kapısı'ndan alınmış</p>
                 </div> <span className="read-more">Tümü <i className="ico-right-open-big"></i></span>
               </a>
@@ -171,66 +182,66 @@ export default function Home() {
         <h2>En Çok Kullanılan Hizmetler</h2>
         <ol start="1" id="homepageTopServicesList">
           <li>
-            <a href="/sgk-tescil-ve-hizmet-dokumu" className="integratedService">
+            <a className="integratedService">
               <img className="lazy" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64px/254.1.8.0.png" alt="Sosyal Güvenlik Kurumu" role="presentation" data-has-webp></img>
-                <em>Sosyal Güvenlik Kurumu</em>
-                <span>SGK Tescil ve Hizmet Dökümü / İşyeri Unvan Listesi</span>
+              <em>Sosyal Güvenlik Kurumu</em>
+              <span>SGK Tescil ve Hizmet Dökümü / İşyeri Unvan Listesi</span>
             </a>
           </li>
           <li>
-            <a href="/sgk-ne-zaman-emekli-olabilirim" className="integratedService">
+            <a className="integratedService">
               <img className="lazy" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64px/254.1.8.0.png" alt="Sosyal Güvenlik Kurumu" role="presentation" data-has-webp></img>
-                <em>Sosyal Güvenlik Kurumu</em>
-                <span>Normal Şartlarda Ne Zaman Emekli Olabilirim?</span>
+              <em>Sosyal Güvenlik Kurumu</em>
+              <span>Normal Şartlarda Ne Zaman Emekli Olabilirim?</span>
             </a>
           </li>
           <li>
-            <a href="/ashb-sosyal-yardim-bilgileri-sorgulama" className="integratedService">
+            <a className="integratedService">
               <img className="lazy" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64px/1378.1.8.0.png" alt="Aile ve Sosyal Hizmetler Bakanlığı" role="presentation" data-has-webp></img>
-                <em>Aile ve Sosyal Hizmetler Bakanlığı</em>
-                <span>Sosyal Yardım Bilgileri Sorgulama</span>
+              <em>Aile ve Sosyal Hizmetler Bakanlığı</em>
+              <span>Sosyal Yardım Bilgileri Sorgulama</span>
             </a>
           </li>
           <li>
-            <a href="/4a-emekli-aylik-bilgisi" className="integratedService">
+            <a className="integratedService">
               <img className="lazy" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64px/254.1.8.0.png" alt="Sosyal Güvenlik Kurumu" role="presentation" data-has-webp></img>
-                <em>Sosyal Güvenlik Kurumu</em>
-                <span>4A Emekli Aylık Bilgisi</span>
+              <em>Sosyal Güvenlik Kurumu</em>
+              <span>4A Emekli Aylık Bilgisi</span>
             </a>
           </li>
           <li>
-            <a href="/ptt-ptt-uzerinden-yapilan-kurum-odemeleri-sorgulama" className="integratedService">
+            <a className="integratedService">
               <img className="lazy" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64px/28.1.8.0.png" alt="PTT" role="presentation" data-has-webp></img>
-                <em>PTT</em>
-                <span>PTT Üzerinden Yapılan Kurum Ödemeleri Sorgulama ve Hesaba Aktarma</span>
+              <em>PTT</em>
+              <span>PTT Üzerinden Yapılan Kurum Ödemeleri Sorgulama ve Hesaba Aktarma</span>
             </a>
           </li>
           <li>
-            <a href="/gtb-mersis-sahibi-ortagi-yetkilisi-oldugum-ticari-isletme-veya-sirketler" className="integratedService">
+            <a className="integratedService">
               <img className="lazy" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64px/15.1.8.0.png" alt="Ticaret Bakanlığı" role="presentation" data-has-webp></img>
-                <em>Ticaret Bakanlığı</em>
-                <span>Sahibi / Ortağı / Yetkilisi Olduğum Ticari İşletme veya Şirketler</span>
+              <em>Ticaret Bakanlığı</em>
+              <span>Sahibi / Ortağı / Yetkilisi Olduğum Ticari İşletme veya Şirketler</span>
             </a>
           </li>
           <li>
-            <a href="/sosyal-guvenlik-emekli-gunluk-odeme-sorgulama" className="integratedService">
+            <a className="integratedService">
               <img className="lazy" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64px/254.1.8.0.png" alt="Sosyal Güvenlik Kurumu" role="presentation" data-has-webp></img>
-                <em>Sosyal Güvenlik Kurumu</em>
-                <span>Emekli Günlük Ödeme Sorgulama</span>
+              <em>Sosyal Güvenlik Kurumu</em>
+              <span>Emekli Günlük Ödeme Sorgulama</span>
             </a>
           </li>
           <li>
-            <a href="/aile-ve-sosyal-hizmetler-sosyal-yardim-basvuru-hizmeti" className="integratedService">
+            <a className="integratedService">
               <img className="lazy" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64px/1378.1.8.0.png" alt="Aile ve Sosyal Hizmetler Bakanlığı" role="presentation" data-has-webp></img>
-                <em>Aile ve Sosyal Hizmetler Bakanlığı</em>
-                <span>Sosyal Yardım Başvuru Hizmeti</span>
+              <em>Aile ve Sosyal Hizmetler Bakanlığı</em>
+              <span>Sosyal Yardım Başvuru Hizmeti</span>
             </a>
           </li>
           <li>
-            <a href="/yuksek-secim-kurulu-yurt-ici-secmen-kaydi-sorgulama" className="integratedService">
+            <a className="integratedService">
               <img className="lazy" src="https://cdn.e-devlet.gov.tr/themes/ankara/images/logos/64px/46.1.8.0.png" alt="Yüksek Seçim Kurulu Başkanlığı" role="presentation" data-has-webp></img>
-                <em>Yüksek Seçim Kurulu Başkanlığı</em>
-                <span>Yurt İçi Seçmen Kaydı Sorgulama</span>
+              <em>Yüksek Seçim Kurulu Başkanlığı</em>
+              <span>Yurt İçi Seçmen Kaydı Sorgulama</span>
             </a>
           </li>
         </ol>
@@ -238,16 +249,16 @@ export default function Home() {
         <h2 className="sectionTitle">Gündemdeki Kısayollar</h2>
         <ul>
           <li>
-            <a href="/belge-dogrulama" data-mh="homepage-shortcut">
+            <a href="/belgeDogrulama" onClick={goTo} data-mh="homepage-shortcut">
               <figure className="card">
-                <img className="lazy" src="https://cdn.e-devlet.gov.tr/themes/izmir/images/banners/b0001.jpg"alt="" role="presentation" width="400" height="200" data-has-webp />
+                <img className="lazy" src="https://cdn.e-devlet.gov.tr/themes/izmir/images/banners/b0001.jpg" alt="" role="presentation" width="400" height="200" data-has-webp />
               </figure>
               <em>Belge Doğrulama</em>
               <span>e-Devlet Kapısı'ndan alınan barkodlu belgeleri burada doğrulayın.</span>
             </a>
           </li>
           <li>
-            <a href="/e-devlette-engel-yok" data-mh="homepage-shortcut">
+            <a data-mh="homepage-shortcut">
               <figure className="card">
                 <img className="lazy" src="https://cdn.e-devlet.gov.tr/themes/izmir/images/banners/b0003.jpg" alt="" role="presentation" width="400" height="200" data-has-webp />
               </figure>
@@ -263,20 +274,20 @@ export default function Home() {
             <p className="richText">e-Devlet Kapısı altyapısını kullanarak hizmet sunan yüzlerce kuruma ait binlerce hizmetten siz de güvenle faydalanabilir bu sayede zamanınızı ve paranızı boşa harcamamış olursunuz. Bu sayfa üzerindeki seçenekleri kullanarak ulaşmak istediğiniz bilgi, belge veya başvuru formuna hızla ulaşabilirsiniz.</p>
           </div>
           <ul className="serviceCategoriesList">
-            <li data-mh="service-category" style={{height: "48px"}}><a href="https://www.turkiye.gov.tr/adalet-hizmetleri" className="justiceCategoryLink"> <em>Adalet</em></a></li>
-            <li data-mh="service-category" style={{height: "48px"}}><a href="https://www.turkiye.gov.tr/cevre-tarim-ve-hayvancilik-hizmetleri" className="agricultureCategoryLink"> <em>Çevre, Tarım ve Hayvancılık</em></a></li>
-            <li data-mh="service-category" style={{height: "48px"}}><a href="https://www.turkiye.gov.tr/devlet-ve-mevzuat-hizmetleri" className="stateCategoryLink"> <em>Devlet ve Mevzuat</em></a></li>
-            <li data-mh="service-category" style={{height: "48px"}}><a href="https://www.turkiye.gov.tr/egitim-hizmetleri" className="educationCategoryLink"> <em>Eğitim</em></a></li>
-            <li data-mh="service-category" style={{height: "48px"}}><a href="https://www.turkiye.gov.tr/genel-bilgiler-hizmetleri" className="generalInfoCategoryLink"> <em>Genel Bilgiler</em></a></li>
-            <li data-mh="service-category" style={{height: "48px"}}><a href="https://www.turkiye.gov.tr/guvenlik-hizmetleri" className="securityCategoryLink"> <em>Güvenlik</em></a></li>
-            <li data-mh="service-category" style={{height: "48px"}}><a href="https://www.turkiye.gov.tr/is-ve-kariyer-hizmetleri" className="businessCategoryLink"> <em>İş ve Kariyer</em></a></li>
-            <li data-mh="service-category" style={{height: "48px"}}><a href="https://www.turkiye.gov.tr/kisisel-bilgiler-hizmetleri" className="personalInfoCategoryLink"> <em>Kişisel Bilgiler</em></a></li>
-            <li data-mh="service-category" style={{height: "48px"}}><a href="https://www.turkiye.gov.tr/saglik-hizmetleri" className="healthCategoryLink"> <em>Sağlık</em></a></li>
-            <li data-mh="service-category" style={{height: "48px"}}><a href="https://www.turkiye.gov.tr/sosyal-guvenlik-ve-sigorta-hizmetleri" className="socialSecurityCategoryLink"> <em>Sosyal Güvenlik ve Sigorta</em></a></li>
-            <li data-mh="service-category" style={{height: "48px"}}><a href="https://www.turkiye.gov.tr/sikayet-ve-bilgi-edinme-hizmetleri" className="complaintsCategoryLink"> <em>Şikayet ve Bilgi Edinme</em></a></li>
-            <li data-mh="service-category" style={{height: "48px"}}><a href="https://www.turkiye.gov.tr/telekomunikasyon-hizmetleri" className="communicationCategoryLink"> <em>Telekomünikasyon</em></a></li>
-            <li data-mh="service-category" style={{height: "48px"}}><a href="https://www.turkiye.gov.tr/trafik-ve-ulasim-hizmetleri" className="transportationCategoryLink"> <em>Trafik ve Ulaşım</em></a></li>
-            <li data-mh="service-category" style={{height: "48px"}}><a href="https://www.turkiye.gov.tr/vergi-harc-ve-cezalar-hizmetleri" className="taxCategoryLink"> <em>Vergi, Harç ve Cezalar</em></a></li>
+            <li data-mh="service-category" style={{ height: "48px" }}><a href="https://www.turkiye.gov.tr/adalet-hizmetleri" className="justiceCategoryLink"> <em>Adalet</em></a></li>
+            <li data-mh="service-category" style={{ height: "48px" }}><a href="https://www.turkiye.gov.tr/cevre-tarim-ve-hayvancilik-hizmetleri" className="agricultureCategoryLink"> <em>Çevre, Tarım ve Hayvancılık</em></a></li>
+            <li data-mh="service-category" style={{ height: "48px" }}><a href="https://www.turkiye.gov.tr/devlet-ve-mevzuat-hizmetleri" className="stateCategoryLink"> <em>Devlet ve Mevzuat</em></a></li>
+            <li data-mh="service-category" style={{ height: "48px" }}><a href="https://www.turkiye.gov.tr/egitim-hizmetleri" className="educationCategoryLink"> <em>Eğitim</em></a></li>
+            <li data-mh="service-category" style={{ height: "48px" }}><a href="https://www.turkiye.gov.tr/genel-bilgiler-hizmetleri" className="generalInfoCategoryLink"> <em>Genel Bilgiler</em></a></li>
+            <li data-mh="service-category" style={{ height: "48px" }}><a href="https://www.turkiye.gov.tr/guvenlik-hizmetleri" className="securityCategoryLink"> <em>Güvenlik</em></a></li>
+            <li data-mh="service-category" style={{ height: "48px" }}><a href="https://www.turkiye.gov.tr/is-ve-kariyer-hizmetleri" className="businessCategoryLink"> <em>İş ve Kariyer</em></a></li>
+            <li data-mh="service-category" style={{ height: "48px" }}><a href="https://www.turkiye.gov.tr/kisisel-bilgiler-hizmetleri" className="personalInfoCategoryLink"> <em>Kişisel Bilgiler</em></a></li>
+            <li data-mh="service-category" style={{ height: "48px" }}><a href="https://www.turkiye.gov.tr/saglik-hizmetleri" className="healthCategoryLink"> <em>Sağlık</em></a></li>
+            <li data-mh="service-category" style={{ height: "48px" }}><a href="https://www.turkiye.gov.tr/sosyal-guvenlik-ve-sigorta-hizmetleri" className="socialSecurityCategoryLink"> <em>Sosyal Güvenlik ve Sigorta</em></a></li>
+            <li data-mh="service-category" style={{ height: "48px" }}><a href="https://www.turkiye.gov.tr/sikayet-ve-bilgi-edinme-hizmetleri" className="complaintsCategoryLink"> <em>Şikayet ve Bilgi Edinme</em></a></li>
+            <li data-mh="service-category" style={{ height: "48px" }}><a href="https://www.turkiye.gov.tr/telekomunikasyon-hizmetleri" className="communicationCategoryLink"> <em>Telekomünikasyon</em></a></li>
+            <li data-mh="service-category" style={{ height: "48px" }}><a href="https://www.turkiye.gov.tr/trafik-ve-ulasim-hizmetleri" className="transportationCategoryLink"> <em>Trafik ve Ulaşım</em></a></li>
+            <li data-mh="service-category" style={{ height: "48px" }}><a href="https://www.turkiye.gov.tr/vergi-harc-ve-cezalar-hizmetleri" className="taxCategoryLink"> <em>Vergi, Harç ve Cezalar</em></a></li>
           </ul>
         </div>
       </section><section id="homepageSingleBannerBlock">
@@ -326,7 +337,7 @@ export default function Home() {
             <a href="https://www.facebook.com/edevletkapi" rel="external" className="socialMediaLink facebook"><em>Facebook</em> <span>/edevletkapi</span></a>
             <a href="https://www.youtube.com/channel/UChX28IHPQ2jyaBatdfRqGSQ" rel="external" className="socialMediaLink youtube"><em>YouTube</em> <span>e-Devlet Kapısı</span></a>
             <a href="https://www.instagram.com/edevletkapisi" rel="external" className="socialMediaLink instagram"><em>Instagram</em> <span>/edevletkapisi</span></a>
-            <em className="hashtag">#edevlet <a href="/iletisim?sosyal=Medya">Sosyal Medya Kullanım Kılavuzu</a></em>
+            <em className="hashtag">#edevlet <a>Sosyal Medya Kullanım Kılavuzu</a></em>
           </div>
         </div>
       </section>

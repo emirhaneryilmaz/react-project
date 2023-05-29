@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { collection, addDoc, Timestamp } from 'firebase/firestore';
+import { collection, addDoc, Timestamp, getDocs } from 'firebase/firestore';
 import { firestore } from '../firebase_setup/firebase';
 
 export default function Register() {
@@ -8,25 +8,54 @@ export default function Register() {
     const [eSifre, setSifre] = useState('');
     const [isim, setIsim] = useState('');
     const [type, setType] = useState(true);
+    const [userData, setUserData] = useState([]);
+    const [length, setLength] = useState(0);
     const ref1 = useRef(null);
     const ref2 = useRef(null);
     const ref3 = useRef(null);
 
+    const getUserData = async () => {
+        const docSnap = await getDocs(collection(firestore, "user-data"));
+        let i=0;
+        docSnap.forEach((doc) => {
+            setUserData(current => [...current, doc.data()]);
+            i++;
+            setLength(i);
+        });
+    }
+
+    useEffect(() => {
+        getUserData();
+    }, []);
+
     const submitHandler = async (e) => {
         e.preventDefault();
-        try {
-            await addDoc(collection(firestore, 'user-data'), {
-                adSoyad: isim,
-                tckimlikNo: tcKimlik,
-                esifre: eSifre,
-                created: Timestamp.now()
-            })
-            let err = 'Başarıyla kayıt oldunuz.';
+        let tcfree = false;
+        for (let i=0; i<length; i++){
+            if(tcKimlik===userData[i].tckimlikNo){
+                tcfree = true;
+                break;
+            }
+        }
+        if(!tcfree){
+            try {
+                await addDoc(collection(firestore, 'user-data'), {
+                    adSoyad: isim,
+                    tckimlikNo: tcKimlik,
+                    esifre: eSifre,
+                    created: Timestamp.now()
+                })
+                let err = 'Başarıyla kayıt oldunuz.';
+                alert(err);
+                set();
+            }
+            catch (err) {
+                alert(err);
+            }
+        } else {
+            let err = 'Bu TC kimlik no sistemde kayıtlıdır.'
             alert(err);
             set();
-        }
-        catch (err) {
-            alert(err);
         }
     }
 
