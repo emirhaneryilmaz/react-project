@@ -4,7 +4,7 @@ import './styles.login.css';
 import '../App.css';
 import { collection, getDocs } from "firebase/firestore";
 import { firestore } from '../firebase_setup/firebase';
-import { isUser, userName } from '../store';
+import { isUser, userName, userTc, userId } from '../store';
 import { useAtom, useSetAtom } from 'jotai';
 
 
@@ -17,6 +17,8 @@ function Login() {
     const [anId, setAnId] = useState('');
     const [userStatus, setUserStatus] = useAtom(isUser);
     const setUser = useSetAtom(userName);
+    const setUserTc = useSetAtom(userTc);
+    const setUserId = useSetAtom(userId);
     const [userData, setUserData] = useState([]);
     const [useridData, setUseridData] = useState([]);
     const navigate = useNavigate();
@@ -48,9 +50,11 @@ function Login() {
         for (let i = 0; i < (userData.length); i++) {
             if (tcKimlik === userData[i].tckimlikNo && eSifre === userData[i].esifre) {
                 setTcK(userData[i].tckimlikNo);
+                setUserTc(userData[i].tckimlikNo);
                 setUname(userData[i].adSoyad);
                 setUser(userData[i].adSoyad);
                 let id = useridData[i].toString();
+                setUserId(id);
                 setAnId(id);
                 setUserStatus(true);
                 hata = false;

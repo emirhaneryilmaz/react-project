@@ -3,7 +3,9 @@ import '../css/home.css';
 import DropdownUser from './dropdown';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { firestore } from "../firebase_setup/firebase";
-import { collection, getDocs, loadBundle } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
+import { userCity, userNeigh, userStreet } from '../store';
+import { useSetAtom } from 'jotai';
 
 export default function AfterLogin() {
     const location = useLocation()
@@ -12,6 +14,9 @@ export default function AfterLogin() {
     const user = location.state.user;
     const tc = location.state.tc;
     const name = location.state.name;
+    const setCity = useSetAtom(userCity);
+    const setNeigh = useSetAtom(userNeigh);
+    const setStreet = useSetAtom(userStreet);
     const [userData, setUserData] = useState([]);
     let city = '';
     let neigh = '';
@@ -33,6 +38,9 @@ export default function AfterLogin() {
             city = userData[0].sehir;
             neigh = userData[0].mahalle;
             street = userData[0].sokak;
+            setCity(userData[0].sehir);
+            setNeigh(userData[0].mahalle);
+            setStreet(userData[0].sokak);
             if (city == null || neigh == null || street == null) {
                 throw new Error("Lütfen tüm bilgileri giriniz.");
             }
@@ -49,13 +57,13 @@ export default function AfterLogin() {
 
     const go = event => {
         event.preventDefault();
-        navigate('/services', { state: { id: id1, user: user} })
+        navigate('/services', { state: { id: id1, user: user } })
     }
 
     const goKurumlar = event => {
         event.preventDefault();
         setAdrs();
-        navigate('/kurumlar', { state: { id: id1, user: user, city: city, neigh: neigh, street: street} })
+        navigate('/kurumlar', { state: { id: id1, user: user, city: city, neigh: neigh, street: street } })
     }
 
     return (
@@ -69,7 +77,7 @@ export default function AfterLogin() {
                         <h2 className="sectionTitle" id="mainActionsBlockTitle">Ana Bölümler</h2>
                         <ul className="mainActionsList">
                             <li><span className="fast-shortcuts"> <a><i className="edk-fonticon-fastresponse"></i><span> Hızlı Çözüm</span></a></span></li>
-                            <li className="inner-wrapper">					</li>  					<li id="l" className="login-area">
+                            <li className="inner-wrapper">					</li>  					<li onClick={setAdrs} id="l" className="login-area">
                                 <DropdownUser />
                             </li> 				</ul>
                     </nav>
