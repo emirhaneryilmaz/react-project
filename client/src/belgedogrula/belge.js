@@ -1,4 +1,4 @@
-import React, { useRef ,useState} from 'react'
+import React, { useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import DropdownUser from '../afterLogin/dropdown'
 import { jsPDF } from "jspdf";
@@ -57,13 +57,26 @@ export default function Belge() {
                 // pdf.addImage(imgData, 'JPEG', 10, 10, 180, 160); 
                 // pdf.save("download.pdf");
                 const doc = new jsPDF();
-                doc.text('Belge', 10, 10);
-                doc.text(`TC: ${tck}`, 10, 20);
-                doc.text(`Name: ${name}`, 10, 30);
-                doc.text(`City: ${city}`, 10, 40);
-                doc.text(`Neighborhood: ${neigh}`, 10, 50);
-                doc.text(`Street: ${street}`, 10, 60);
-                doc.save('download.pdf');
+                doc.setFontSize(22);
+                doc.text('E-devlet', 10, 30);
+
+                doc.setFontSize(16);
+                doc.setFont("helvetica", "bold");
+                doc.text(`TC: ${tck}`, 10, 50);
+
+                doc.setFont("helvetica", "normal");
+                doc.text(`Name: ${name}`, 10, 70);
+
+                doc.setFont("helvetica", "bold");
+                doc.text(`City: ${city}`, 10, 90);
+
+                doc.setFont("helvetica", "normal");
+                doc.text(`Neighborhood: ${neigh}`, 10, 110);
+
+                doc.setFont("helvetica", "bold");
+                doc.text(`Street: ${street}`, 10, 130);
+
+                doc.save('belge.pdf');
             });
     }
 
