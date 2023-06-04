@@ -1,6 +1,6 @@
-import React, { useRef ,useState} from 'react'
+import React, { useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import DropdownUser from '../afterLogin/dropdown'
+import Nav from '../kurumlar/nav'
 import { jsPDF } from "jspdf";
 import { useAtom } from 'jotai';
 import html2canvas from 'html2canvas';
@@ -12,7 +12,7 @@ export default function Belge() {
     const navigate = useNavigate();
 
     const user = location.state.user;
-    const id1 = location.state.id1;
+    const id1 = location.state.id;
     const tcKimlik = location.state.tcKimlik;
     let [name] = useAtom(userName);
     const [tck] = useAtom(userTc);
@@ -57,6 +57,9 @@ export default function Belge() {
                 // pdf.addImage(imgData, 'JPEG', 10, 10, 180, 160); 
                 // pdf.save("download.pdf");
                 const doc = new jsPDF();
+                var image = new Image();
+                image.src = 'icon.png';
+                doc.addImage(image, 'PNG', 10, 10);
                 doc.text('Belge', 10, 10);
                 doc.text(`TC: ${tck}`, 10, 20);
                 doc.text(`Name: ${name}`, 10, 30);
@@ -69,8 +72,8 @@ export default function Belge() {
 
     const goHome = event => {
         event.preventDefault();
-        if (user) {
-            navigate('/home', { state: { id: id1, user: user, city: city, neigh: neigh, street: street, tc: tcKimlik, name: name } });
+        if (user===true) {
+            navigate('/home', { state: { id: id1, user: user} });
         } else {
             navigate('/', { state: { user: user } });
         }
@@ -79,50 +82,12 @@ export default function Belge() {
     return (
         <div>
             <header id="top">
-                <div className="headerGroup">
-                    <div id="accesibilityBlock">
-                        <a id="contentBlockLink">İçeriğe Git</a> <a href="/">Ana Sayfa</a>
-                    </div>
-
-                    <h1 id="brandingBlock">
-                        <a id="homeLink" href="#" onClick={goHome} title="Ana Sayfa'ya Dönüş">e-Devlet Kapısı</a>
-                    </h1>
-                    <nav id="mainActionsBlock" aria-labelledby="mainActionsBlockTitle">
-                        <h2 className="sectionTitle" id="mainActionsBlockTitle">Ana Bölümler</h2>
-                        <ul className="mainActionsList">
-                            <li><span className="fast-shortcuts"> <a href="/iletisim?hizli=CozumMerkeziV2"><i className="edk-fonticon-fastresponse"></i><span> Hızlı Çözüm</span></a></span></li>
-
-                            <li className="inner-wrapper">
-                                <ul className="accessibility" id="accessibilityUl" aria-expanded="false" role="menu" tabIndex="0" aria-label="Erişilebilirlik">
-                                    <li className="active" role="none"><i className="ico-key-1" aria-hidden="true"></i></li>
-                                    <li className="menu" role="none">
-                                        <ul role="none">
-                                            <li role="none"><a role="menuitem" href="/bilgilendirme?konu=erisilebilirlik">Erişilebilirlik Özellikleri</a></li>
-                                            <li role="none"><a role="menuitem" href="#" className="textOnlyToggle" data-state="html">Salt Metin Görünümü</a></li>
-                                            <li role="none"><a role="menuitem" href="#" className="fontSizeToggle" data-state="normal">Daha Belirgin Odaklama</a></li>
-                                        </ul>
-                                    </li>
-                                </ul> 					</li> 					<li className="search-form-wrapper">
-                                <form id="searchForm" name="searchForm" method="get" action="/arama">
-                                    <label htmlFor="searchField">Aranan Terim</label>
-                                    <div className="search-wrapper">
-                                        <div className="inner-search">
-                                            <input placeholder="Size nasıl yardım edebilirim?" id="searchField" name="aranan" autoComplete="off" role="combobox" autoCorrect="off" autoCapitalize="off" /> <span className="ico-search"></span>
-                                        </div>
-                                        <ul id="popSearch"></ul>
-                                    </div>
-                                    <input id="searchButton" type="submit" value="Ara" />
-                                </form>
-                            </li>  					<li id="l" className="login-area">
-                                <DropdownUser />
-                            </li>				</ul>
-                    </nav>
-                </div>
+                <Nav />
             </header><main id="serviceBlock" className="typeInsurance">
                 <div id="vue">
                     <nav className="pageTabNavigation" aria-label="Üst Sayfalar">
                         <ul className="breadcrumbNavigation">
-                            <li><a href="#" onClick={goHome} className="home">Ana Sayfa</a></li>
+                            <li><a href="/home" onClick={goHome} className="home">Ana Sayfa</a></li>
                             <li><a>Belge Doğrulama</a></li>
                             <li className="here"></li>
                         </ul>

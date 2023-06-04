@@ -1,16 +1,32 @@
 import React from 'react';
 import DropdownUser from '../afterLogin/dropdown';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function Nav() {
     const location = useLocation();
+    const navigate = useNavigate();
     const isUser = location.state.user;
+    const id = location.state.id;
+
+    const goHome = event => {
+        event.preventDefault();
+        if(isUser===true) {
+            navigate('/home', {
+                state: {
+                    id: id,
+                    user: isUser
+                }
+            })
+        } else {
+            navigate('/', { state: { user: isUser } })
+        }
+    }
 
     if (isUser===true) {
         return (
             <div className="headerGroup">
                 <h1 id="brandingBlock">
-                    <a id="homeLink" title="Ana Sayfa'ya Dönüş">e-Devlet Kapısı</a>
+                    <a id="homeLink" href='/home' onClick={goHome} title="Ana Sayfa'ya Dönüş">e-Devlet Kapısı</a>
                 </h1>
                 <nav id="mainActionsBlock" aria-labelledby="mainActionsBlockTitle">
                     <h2 className="sectionTitle" id="mainActionsBlockTitle">Ana Bölümler</h2>
@@ -40,7 +56,7 @@ export default function Nav() {
         return (
             <div className="headerGroup">
                 <h1 id="brandingBlock">
-                    <a id="homeLink" title="Ana Sayfa'ya Dönüş">e-Devlet Kapısı</a>
+                    <a id="homeLink" href='/' onClick={goHome} title="Ana Sayfa'ya Dönüş">e-Devlet Kapısı</a>
                 </h1>
                 <nav id="mainActionsBlock" aria-labelledby="mainActionsBlockTitle">
                     <h2 className="sectionTitle" id="mainActionsBlockTitle">Ana Bölümler</h2>
