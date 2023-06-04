@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef ,useState} from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import DropdownUser from '../afterLogin/dropdown'
 import { jsPDF } from "jspdf";
@@ -21,7 +21,10 @@ export default function Belge() {
     let [neigh] = useAtom(userNeigh);
     let [street] = useAtom(userStreet);
 
+    const [showInfo, setShowInfo] = useState(false);
+
     const buttonHandler = async () => {
+        setShowInfo(true);
 
     };
 
@@ -34,6 +37,8 @@ export default function Belge() {
         }
         return text;
     }
+
+
 
     name = replaceTurkishCharacters(name);
     city = replaceTurkishCharacters(city);
@@ -126,8 +131,8 @@ export default function Belge() {
                         <section className="serviceTitleBlock"><div className="serviceDetails"><img className="agencyLogo webp" src="//cdn.e-devlet.gov.tr/themes/ankara/images/logos/64webp/edk.1.8.0.webp" alt="" width="64" height="64" /><h2><a href="/belge-dogrulama">Belge Doğrulama</a><em></em></h2></div><div className="serviceActions"><div className="share_item"><button className="share_button" id="share_button" data-match-height="serviceActs"><i className="ico-share" aria-hidden="true"></i> <span className="serviceActions_maintitle">Paylaş</span></button><div className="share_menu" id="share_menu" data-match-height="serviceActs"><a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.turkiye.gov.tr/belge-dogrulama&text=Belge+Do%C4%9Frulama&via=ekapi&related=ekapi"><i className="ico-twitter" aria-hidden="true"></i><span className="serviceActions_maintitle">Twitter'da Paylaş</span></a><a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.turkiye.gov.tr/belge-dogrulama"><i className="ico-facebook" aria-hidden="true"></i><span className="serviceActions_maintitle"> Facebook'da Paylaş</span></a></div></div></div></section><aside id="serviceHelperBlock"><ul className="serviceIntroductionBlock"><li>Bu hizmet barkodlu belge sahibi kurumların işbirliği ile e-Devlet Kapısı altyapısı üzerinden sunulmaktadır.</li><li className="miniTiming">Bu işlem için yaklaşık 3 dakikanızı ayırmalısınız.</li><li className="progressStatus">Bu işlem toplam <strong>4</strong> aşamalıdır. Şu anda <strong>1</strong>. aşamadasınız.<progress value="1" max="4"></progress></li><li><ol className="progressMeter" aria-label="Hizmet Aşamaları"><li className="current">Barkod Numarası</li><li className="incomplete">Sorgulama Alanı</li><li className="incomplete">Bilgilendirme ve Onay</li><li className="final">İşlem Sonucu</li></ol></li></ul></aside>
                         <section className="serviceContainer">
 
-                           
-                            
+
+
                             <div className="richText">e-Devlet Kapısı üzerinden oluşturulan tüm barkodlu belgeleri burada doğrulayabilirsiniz.</div>
                             <form name="mainForm" action="/belge-dogrulama?submit" method="POST" className="serviceForm">
                                 <fieldset>
@@ -145,19 +150,21 @@ export default function Belge() {
                             <div className="formSubmitRow">
 
 
-                                <button id="gosterButton" className="submitButton" onClick={buttonHandler}>Göster</button>
+                                {!showInfo && <button id="gosterButton" className="submitButton" onClick={buttonHandler}>Göster</button>}
 
-                                <div className='informationField'>
-                                <div ref={inputRef}>
-                                    <h1>Belge</h1>
-                                    <p>TC: {tck}</p>
-                                    <p>Name: {name}</p>
-                                    <p>City: {city}</p>
-                                    <p>Neighborhood: {neigh}</p>
-                                    <p>Street: {street}</p>
-                                </div>
-                                <button className="submitButton" onClick={printDocument}>İndir</button>
-                            </div>
+                                {showInfo && (
+                                    <div className='informationField'>
+                                        <div ref={inputRef}>
+                                            <h1>Belge</h1>
+                                            <p>TC: {tck}</p>
+                                            <p>Name: {name}</p>
+                                            <p>City: {city}</p>
+                                            <p>Neighborhood: {neigh}</p>
+                                            <p>Street: {street}</p>
+                                        </div>
+                                        <button className="submitButton" onClick={printDocument}>İndir</button>
+                                    </div>
+                                )}
                             </div>
 
 
