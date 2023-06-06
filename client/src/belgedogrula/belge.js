@@ -48,33 +48,52 @@ export default function Belge() {
 
     const inputRef = useRef();
 
-    const printDocument = () => {
+    const printDocument = async ()  => {
         console.log(inputRef.current)
+
+        let imgData;
+
+    // Resmi base64 formatına çevirme
+    const imgURL = 'client/src/belgedogrula/icon.png'; // Burayı kendi resminizin yoluyla değiştirin
+
+    await fetch(imgURL)
+        .then(res => res.blob())
+        .then(blob => {
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                imgData = reader.result;
+            };
+            reader.readAsDataURL(blob);
+        });
+
+
         html2canvas(inputRef.current)
             .then((canvas) => {
+                
                 const imgData = canvas.toDataURL('image/png');
                 // const pdf = new jsPDF();
                 // pdf.addImage(imgData, 'JPEG', 10, 10, 180, 160); 
                 // pdf.save("download.pdf");
                 const doc = new jsPDF();
                 doc.setFontSize(22);
+                doc.setFont("helvetica", "bold");
                 doc.text('E-devlet', 10, 30);
 
                 doc.setFontSize(16);
-                doc.setFont("helvetica", "bold");
+                doc.setFont("helvetica", "normal");
                 doc.text(`TC: ${tck}`, 10, 50);
 
                 doc.setFont("helvetica", "normal");
-                doc.text(`Name: ${name}`, 10, 70);
-
-                doc.setFont("helvetica", "bold");
-                doc.text(`City: ${city}`, 10, 90);
+                doc.text(`Kisi: ${name}`, 10, 70);
 
                 doc.setFont("helvetica", "normal");
-                doc.text(`Neighborhood: ${neigh}`, 10, 110);
+                doc.text(`Sehir: ${city}`, 10, 90);
 
-                doc.setFont("helvetica", "bold");
-                doc.text(`Street: ${street}`, 10, 130);
+                doc.setFont("helvetica", "normal");
+                doc.text(`Mahalle: ${neigh}`, 10, 110);
+
+                doc.setFont("helvetica", "normal");
+                doc.text(`Sokak: ${street}`, 10, 130);
 
                 doc.save('belge.pdf');
             });
@@ -103,7 +122,7 @@ export default function Belge() {
                         </ul>
                     </nav>
                     <section id="pageContentBlock" className="themed">
-                        <section className="serviceTitleBlock"><div className="serviceDetails"><img className="agencyLogo webp" src="//cdn.e-devlet.gov.tr/themes/ankara/images/logos/64webp/edk.1.8.0.webp" alt="" width="64" height="64" /><h2><a href="/belge-dogrulama">Belge Doğrulama</a><em></em></h2></div><div className="serviceActions"><div className="share_item"><button className="share_button" id="share_button" data-match-height="serviceActs"><i className="ico-share" aria-hidden="true"></i> <span className="serviceActions_maintitle">Paylaş</span></button><div className="share_menu" id="share_menu" data-match-height="serviceActs"><a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.turkiye.gov.tr/belge-dogrulama&text=Belge+Do%C4%9Frulama&via=ekapi&related=ekapi"><i className="ico-twitter" aria-hidden="true"></i><span className="serviceActions_maintitle">Twitter'da Paylaş</span></a><a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.turkiye.gov.tr/belge-dogrulama"><i className="ico-facebook" aria-hidden="true"></i><span className="serviceActions_maintitle"> Facebook'da Paylaş</span></a></div></div></div></section><aside id="serviceHelperBlock"><ul className="serviceIntroductionBlock"><li>Bu hizmet barkodlu belge sahibi kurumların işbirliği ile e-Devlet Kapısı altyapısı üzerinden sunulmaktadır.</li><li className="miniTiming">Bu işlem için yaklaşık 3 dakikanızı ayırmalısınız.</li><li className="progressStatus">Bu işlem toplam <strong>4</strong> aşamalıdır. Şu anda <strong>1</strong>. aşamadasınız.<progress value="1" max="4"></progress></li><li><ol className="progressMeter" aria-label="Hizmet Aşamaları"><li className="current">Barkod Numarası</li><li className="incomplete">Sorgulama Alanı</li><li className="incomplete">Bilgilendirme ve Onay</li><li className="final">İşlem Sonucu</li></ol></li></ul></aside>
+                        <section className="serviceTitleBlock"><div className="serviceDetails"><img className="agencyLogo webp" src="//cdn.e-devlet.gov.tr/themes/ankara/images/logos/64webp/edk.1.8.0.webp" alt="" width="64" height="64" /><h2><a href="/belgeDogrulama">Belge Doğrulama</a><em></em></h2></div><div className="serviceActions"><div className="share_item"><button className="share_button" id="share_button" data-match-height="serviceActs"><i className="ico-share" aria-hidden="true"></i> <span className="serviceActions_maintitle">Paylaş</span></button><div className="share_menu" id="share_menu" data-match-height="serviceActs"><a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.turkiye.gov.tr/belge-dogrulama&text=Belge+Do%C4%9Frulama&via=ekapi&related=ekapi"><i className="ico-twitter" aria-hidden="true"></i><span className="serviceActions_maintitle">Twitter'da Paylaş</span></a><a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.turkiye.gov.tr/belge-dogrulama"><i className="ico-facebook" aria-hidden="true"></i><span className="serviceActions_maintitle"> Facebook'da Paylaş</span></a></div></div></div></section><aside id="serviceHelperBlock"><ul className="serviceIntroductionBlock"><li>Bu hizmet barkodlu belge sahibi kurumların işbirliği ile e-Devlet Kapısı altyapısı üzerinden sunulmaktadır.</li><li className="miniTiming">Bu işlem için yaklaşık 3 dakikanızı ayırmalısınız.</li><li className="progressStatus">Bu işlem toplam <strong>4</strong> aşamalıdır. Şu anda <strong>1</strong>. aşamadasınız.<progress value="1" max="4"></progress></li><li><ol className="progressMeter" aria-label="Hizmet Aşamaları"><li className="current">Barkod Numarası</li><li className="incomplete">Sorgulama Alanı</li><li className="incomplete">Bilgilendirme ve Onay</li><li className="final">İşlem Sonucu</li></ol></li></ul></aside>
                         <section className="serviceContainer">
 
 
@@ -125,10 +144,10 @@ export default function Belge() {
                                         <div ref={inputRef}>
                                             <h1>Belge</h1>
                                             <p>TC: {tck}</p>
-                                            <p>Name: {name}</p>
-                                            <p>City: {city}</p>
-                                            <p>Neighborhood: {neigh}</p>
-                                            <p>Street: {street}</p>
+                                            <p>Kişi: {name}</p>
+                                            <p>Şehir: {city}</p>
+                                            <p>Mahalle: {neigh}</p>
+                                            <p>Sokak: {street}</p>
                                         </div>
                                         <button className="submitButton" onClick={printDocument}>İndir</button>
                                     </div>

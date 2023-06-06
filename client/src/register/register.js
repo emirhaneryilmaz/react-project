@@ -187,7 +187,7 @@ export default function Register() {
 
                             </fieldset>
                             <div className="formSubmitRow">
-                                <Link to='/'><button className="backButton" ><span className="ico-left-open"></span>Anasayfa</button></Link>
+                                <Link to='/login'><button className="backButton" ><span className="ico-left-open"></span>Giriş Yap</button></Link>
                                 <button className="submitButton" type="submit" >Kayıt ol<span className="ico-right-open"></span></button>
                             </div>
                         </form>
