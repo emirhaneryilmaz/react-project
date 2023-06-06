@@ -1,8 +1,8 @@
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import DropdownUser from '../afterLogin/dropdown';
 import { useAtom } from 'jotai';
-import { userName, userTc, userId, userCity, userStreet, userNeigh } from '../store';
+import { userName, userTc, userId, userCity, userStreet, userNeigh, isUser } from '../store';
 
 export default function Profile() {
     const name = useAtom(userName);
@@ -11,27 +11,28 @@ export default function Profile() {
     const city = useAtom(userCity);
     const neigh = useAtom(userNeigh);
     const street = useAtom(userStreet);
+    const user = useAtom(isUser);
     const navigate = useNavigate();
 
     const goServices = event => {
         event.preventDefault();
-        navigate('/services', { state: { id: id[0] } });
+        navigate('/services', { state: { id: id[0], user: user[0] } });
     }
 
     const goHome = event => {
         event.preventDefault();
-        navigate('/home', { state: { id: id[0] } });
+        navigate('/home', { state: { id: id[0], user: user[0] } });
     }
 
     const refresh = event => {
         event.preventDefault();
-        navigate('', { state: { id: id[0] } });
+        navigate('', { state: { id: id[0], user: user[0] } });
     }
 
     const goAddress = event => {
         event.preventDefault();
         if(city[0]!=='' && neigh[0]!=='' && street[0]!==''){
-            navigate('/addressQuestion', { state: { id: id[0], city: city[0], neigh: neigh[0], street: street[0] } });
+            navigate('/addressQuestion', { state: { id: id[0], city: city[0], neigh: neigh[0], street: street[0], user: user[0] } });
         } else if (city[0]==='' && neigh[0]==='' && street[0]==='') {
             alert('Lütfen önce adres bilgisi ekleyiniz.');
         }
@@ -101,7 +102,7 @@ export default function Profile() {
                                     <div className="formRowAddress">
                                         <h3 className="definitionHeader">Kişisel Bilgileriniz</h3>
                                         <dl className="dataList compact">
-                                            <dt> Ad soyad: </dt>
+                                            <dt> Ad soyad: </dt> 
                                             <dd> {name}</dd>
                                             <dt> TC Kimlik Numaranız: </dt>
                                             <dd>{tck}</dd>

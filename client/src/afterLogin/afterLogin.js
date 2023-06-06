@@ -66,12 +66,17 @@ export default function AfterLogin() {
         navigate('/kurumlar', { state: { id: id1, user: user, city: city, neigh: neigh, street: street } })
     }
 
+    const refresh = event => {
+        event.preventDefault();
+        navigate('', { state: { id: id1, user: user } });
+    }
+
     return (
         <div id="homePage">
             <header id="top">
                 <div className="headerGroup">
                     <h1 id="brandingBlock">
-                        <a id="homeLink" href="/home" title="Ana Sayfa'ya Dönüş">e-Devlet Kapısı</a>
+                        <a id="homeLink" href="/home" onClick={refresh} title="Ana Sayfa'ya Dönüş">e-Devlet Kapısı</a>
                     </h1>
                     <nav id="mainActionsBlock" aria-labelledby="mainActionsBlockTitle">
                         <h2 className="sectionTitle" id="mainActionsBlockTitle">Ana Bölümler</h2>

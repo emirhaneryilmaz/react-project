@@ -112,13 +112,6 @@ export default function Belge() {
                             <form name="mainForm" action="/belge-dogrulama?submit" method="POST" className="serviceForm">
                                 <fieldset>
                                     <legend>Belge Doğrulama</legend>
-                                    <div className="formRow required">
-
-                                        <label htmlFor="sorgulananBarkod" className="rowLabel">TC Kimlik Numaranız</label>
-                                        <input type="text" name="sorgulananBarkod" maxLength="50" autoComplete="off" edl-mob="barkodInput" required="required" aria-required="true" id="sorgulananBarkod" className="text" />
-                                        <div className="fieldInfo">Doğrulamak istediğiniz belgeye ait barkod numarasını giriniz.</div>
-                                    </div>
-
                                 </fieldset>
 
                             </form>
