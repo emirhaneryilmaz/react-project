@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Nav from '../kurumlar/nav'
 import { jsPDF } from "jspdf";
-import { useAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 import html2canvas from 'html2canvas';
 import { userName, userTc, userId, userCity, userStreet, userNeigh } from '../store';
 
@@ -13,13 +13,18 @@ export default function Belge() {
 
     const user = location.state.user;
     const id1 = location.state.id;
-    const tcKimlik = location.state.tcKimlik;
     let [name] = useAtom(userName);
-    const [tck] = useAtom(userTc);
-    const [id] = useAtom(userId);
+    let [tck] = useAtom(userTc);
     let [city] = useAtom(userCity);
     let [neigh] = useAtom(userNeigh);
     let [street] = useAtom(userStreet);
+    const setName = useSetAtom(userName);
+    const setTc = useSetAtom(userTc);
+
+    if(!user){
+        setName('');
+        setTc('');
+    }
 
     const [showInfo, setShowInfo] = useState(false);
 
