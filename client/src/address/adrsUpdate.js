@@ -46,14 +46,18 @@ export default function AdrsUpdate() {
 
     const update = event => {
         event.preventDefault();
-        updateDoc(updateAdrs, {
-            sehir: city,
-            sokak: street,
-            mahalle: neigh
-        })
-        let err = 'Başarıyla güncellendi';
-        alert(err);
-        set();
+        try {
+            updateDoc(updateAdrs, {
+                sehir: city,
+                sokak: street,
+                mahalle: neigh
+            })
+            let err = 'Başarıyla güncellendi';
+            alert(err);
+            set();
+        } catch (error) {
+            alert(error)            
+        }
     }
 
     const goHome = event => {
